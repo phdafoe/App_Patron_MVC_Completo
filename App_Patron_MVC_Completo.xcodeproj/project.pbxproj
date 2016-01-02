@@ -10,6 +10,7 @@
 		631BB11A1C2C4F0500333884 /* ICOLibraryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BB1191C2C4F0500333884 /* ICOLibraryAPI.swift */; };
 		631BB11C1C2C558800333884 /* ICOPersistencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BB11B1C2C558800333884 /* ICOPersistencyManager.swift */; };
 		631BB1201C2F0C9600333884 /* ICOAlbumExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */; };
+		631BB1221C300BD000333884 /* ICOHorizontalScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 631BB1211C300BD000333884 /* ICOHorizontalScroller.swift */; };
 		6360A6421C28110B006C985E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6360A6411C28110B006C985E /* AppDelegate.swift */; };
 		6360A6441C28110B006C985E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6360A6431C28110B006C985E /* ViewController.swift */; };
 		6360A6471C28110B006C985E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6360A6451C28110B006C985E /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 		631BB1191C2C4F0500333884 /* ICOLibraryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOLibraryAPI.swift; sourceTree = "<group>"; };
 		631BB11B1C2C558800333884 /* ICOPersistencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOPersistencyManager.swift; sourceTree = "<group>"; };
 		631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOAlbumExtension.swift; sourceTree = "<group>"; };
+		631BB1211C300BD000333884 /* ICOHorizontalScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOHorizontalScroller.swift; sourceTree = "<group>"; };
 		6360A63E1C28110B006C985E /* App_Patron_MVC_Completo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_Patron_MVC_Completo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6360A6411C28110B006C985E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6360A6431C28110B006C985E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 			name = API;
 			sourceTree = "<group>";
 		};
+		631BB1231C300C2C00333884 /* NOTES */ = {
+			isa = PBXGroup;
+			children = (
+				6360A6551C2812F7006C985E /* NOTAS DE DESARROLLO.swift */,
+			);
+			name = NOTES;
+			sourceTree = "<group>";
+		};
 		6360A6351C28110B006C985E = {
 			isa = PBXGroup;
 			children = (
@@ -83,7 +93,7 @@
 				6360A65D1C28169E006C985E /* CONTROLLER */,
 				6360A65C1C281697006C985E /* VIEW */,
 				6360A6591C2813DD006C985E /* MODEL */,
-				6360A6551C2812F7006C985E /* NOTAS DE DESARROLLO.swift */,
+				631BB1231C300C2C00333884 /* NOTES */,
 				6360A6451C28110B006C985E /* Main.storyboard */,
 				6360A6481C28110B006C985E /* Assets.xcassets */,
 				6360A64A1C28110B006C985E /* LaunchScreen.storyboard */,
@@ -104,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				6360A65A1C281692006C985E /* ICOAbumView.swift */,
+				631BB1211C300BD000333884 /* ICOHorizontalScroller.swift */,
 				631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */,
 			);
 			name = VIEW;
@@ -191,6 +202,7 @@
 				6360A6441C28110B006C985E /* ViewController.swift in Sources */,
 				631BB1201C2F0C9600333884 /* ICOAlbumExtension.swift in Sources */,
 				6360A6561C2812F7006C985E /* NOTAS DE DESARROLLO.swift in Sources */,
+				631BB1221C300BD000333884 /* ICOHorizontalScroller.swift in Sources */,
 				6360A6581C2813D8006C985E /* ICOAlbumModel.swift in Sources */,
 				631BB11A1C2C4F0500333884 /* ICOLibraryAPI.swift in Sources */,
 				6360A6421C28110B006C985E /* AppDelegate.swift in Sources */,

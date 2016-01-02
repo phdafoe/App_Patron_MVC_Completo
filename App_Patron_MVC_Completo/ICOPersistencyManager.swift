@@ -60,7 +60,6 @@ class ICOPersistencyManager: NSObject {
     func getAlbumsMusicales () -> [ICOAlbumModel]{
         
         return albumesDeMusica
-        
     }
     
     func addAlbumsMusicales (album: ICOAlbumModel, indice: Int){
@@ -75,13 +74,41 @@ class ICOPersistencyManager: NSObject {
     func deleteAlbumsMusicales (indice: Int){
         
         albumesDeMusica.removeAtIndex(indice)
+    }
+    
+    //Guardado de Imagenes localmente en el fichero "Documents"
+    func salvarLocalmenteImagenes (image: UIImage, fileName: String){
+        
+        let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
+        let data = UIImagePNGRepresentation(image)
+        data!.writeToFile(path, atomically: true)
+    }
+    
+    //devolvera nil si alguna imagen no se encuentra
+    //Habindo realizado esta persistencia basica  vamos a descargar las imagenes el ICOLibraryAPI
+    func getImagenesSalvadasLocalmente(fileName: String) -> UIImage? {
+        
+        var errorInicial : NSError?
+        let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
+        let data : NSData?
+        do{
+            data = try NSData(contentsOfFile: path, options: .UncachedRead)
+        }catch let errorTemporal as NSError{
+            errorInicial = errorTemporal
+            data = nil
+        }
+        
+        if let desempaquetadoError = errorInicial{
+            return nil
+        }else{
+            return UIImage(data: data!)
+        }
         
     }
     
     
-   
     
     
     
-
+    
 }

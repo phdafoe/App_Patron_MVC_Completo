@@ -25,6 +25,57 @@ class ICOLibraryAPI: NSObject {
         httpCLient = HTTPClient()
         IsOnline = false // es una prueba aqui no hay conexion con ningun servidor
         super.init()
+        
+        
+        /****************=========================**********************/
+        
+        //PATRON NOTIFICACION
+        //en este otro lado de la ecuacion el "OBSERVADOR" recibe -> cada vez que un ICOAlbumView notifique un mensaje "ICODescargaImagenesNotificacion" ya que ICOLibraryAPI se ha dado de alta como observador de dicha notificacion en el init, entonces ICOLIbraryAPI llama a "descargaDeImagenes" en respuesta
+        
+        // Siempre hay que dar de baja la notificacion cuando se cancela la asignacion de su clase, si esto no se hace la App se bloquea
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "descargaDeImagenes:",
+            name: "ICODescargaImagenesNotificacion",
+            object: nil)
+
+        /****************=========================**********************/
+   
+    }
+    
+    //MARK: - UTILS
+    //probablemente una mejor idea seria guardar las portadas de los discos localmente para que la App no tenga que descargarlas nuevamente
+    //DEBEMOS HACER ESO EN ICOPersistencyManager
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    //
+    func descargaDeImagenes(notificacion:NSNotification){
+        
+        //1 esta funcion se ejecuta a traves de notificaciones y por tanto recibe como parametro de entrada la notificacion, el UIImageView y la urlCartula se recuperan de la notificaion
+        let userInfo = notificacion.userInfo as! [String: AnyObject]
+        let imageView = userInfo["imageView"] as! UIImageView?
+        let urlCaratula = userInfo["urlCaratula"] as! String
+        
+        //2 aqui se recupera la imagen de ICOPersistencyManager si se ha descargado previamente
+        if let imageViewDesempaquetada = imageView{
+            imageViewDesempaquetada.image = persistencyManager.getImagenesSalvadasLocalmente(urlCaratula.lastPathComponent)
+            if imageViewDesempaquetada.image == nil{
+                //3 si la imagen no se ha descargado iniciamos un hilo secundario
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                    let imagenesDescargadas = self.httpCLient.downloadImage(urlCaratula as String)
+                    
+                    //4 Llamamos la cola Principal cuando la descarga se haya "completado" debe mostrar la imagen en la ImageView y utiliza el persistencyManager para guardarlo localmente
+                    
+                    dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                        imageViewDesempaquetada.image = imagenesDescargadas
+                        self.persistencyManager.salvarLocalmenteImagenes(imagenesDescargadas, fileName: urlCaratula.lastPathComponent)
+                    })
+                    
+                })
+            }
+        }
     }
     
     
@@ -65,6 +116,15 @@ class ICOLibraryAPI: NSObject {
         if IsOnline{
             httpCLient.postRequest("/api/deleteAlbumsMusicales", body: "\(indice)")
             
+        }
+    }
+}
+
+
+extension String {
+    var lastPathComponent: String {
+        get {
+            return (self as NSString).lastPathComponent
         }
     }
 }
