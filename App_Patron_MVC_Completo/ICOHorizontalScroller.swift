@@ -34,7 +34,7 @@ class ICOHorizontalScroller: UIView {
     
     
     //MARK: - VARIABLES LOCALES GLOBALES
-    //1 -> Definimos constantes para que sea facil de modificar el diseño, las dimensiones de la vista seran de 200 x 200 con un margen de 10 puntos de su propio rectangulo que se encierra
+    //1 -> Definimos constantes para que sea facil de modificar el diseño, las dimensiones de la vista seran de 100 x 100 con un margen de 10 puntos de su propio rectangulo que se encierra
     private let VIEW_PADDING = 10
     private let VIEW_DIMENSIONS = 100
     private let VIEW_OFF_SET = 100

@@ -63,10 +63,13 @@ class ICOPersistencyManager: NSObject {
     }
     
     func addAlbumsMusicales (album: ICOAlbumModel, indice: Int){
+        
         if (albumesDeMusica.count >= indice){
             
             albumesDeMusica.insert(album, atIndex: indice)
+            
         }else{
+            
             albumesDeMusica.append(album)
         }
     }
@@ -76,12 +79,15 @@ class ICOPersistencyManager: NSObject {
         albumesDeMusica.removeAtIndex(indice)
     }
     
+    
+    
     //Guardado de Imagenes localmente en el fichero "Documents"
     func salvarLocalmenteImagenes (image: UIImage, fileName: String){
         
         let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
         let data = UIImagePNGRepresentation(image)
         data!.writeToFile(path, atomically: true)
+        
     }
     
     //devolvera nil si alguna imagen no se encuentra
@@ -91,16 +97,22 @@ class ICOPersistencyManager: NSObject {
         var errorInicial : NSError?
         let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
         let data : NSData?
+        
         do{
             data = try NSData(contentsOfFile: path, options: .UncachedRead)
+            
         }catch let errorTemporal as NSError{
+            
             errorInicial = errorTemporal
             data = nil
         }
         
         if let desempaquetadoError = errorInicial{
+            
             return nil
+            
         }else{
+            
             return UIImage(data: data!)
         }
         

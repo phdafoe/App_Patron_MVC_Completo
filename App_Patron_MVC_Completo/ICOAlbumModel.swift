@@ -31,9 +31,8 @@ class ICOAlbumModel: NSObject {
     
     //El metodo description devuelve una representacion de cadena de atributos de ICOAlbumModel
     override var description: String{
-        
         return "tituloAlbum: \(tituloAlbum)" + "artista: \(artista)" + "generoMusical: \(generoMusical)" + "urlCaratula: \(urlCaratula)" + "anyoDisco: \(anyoDisco)"
     }
-    
+   
 
 }

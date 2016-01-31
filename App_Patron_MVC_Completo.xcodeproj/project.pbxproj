@@ -106,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				6360A6571C2813D8006C985E /* ICOAlbumModel.swift */,
+				631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */,
 			);
 			name = MODEL;
 			sourceTree = "<group>";
@@ -115,7 +116,6 @@
 			children = (
 				6360A65A1C281692006C985E /* ICOAbumView.swift */,
 				631BB1211C300BD000333884 /* ICOHorizontalScroller.swift */,
-				631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */,
 			);
 			name = VIEW;
 			sourceTree = "<group>";

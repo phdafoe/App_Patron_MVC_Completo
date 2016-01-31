@@ -18,7 +18,7 @@
     Proceso de desarrollo de esta aplicacion, en dondes conoceremos los patrones de diseño de cocoa mas comunes
 
 1. Creacional -> Singleton
-2. Estructural -> MVC, decorador, Adaptador, Fachada
+2. Estructural -> MVC, Decorador, Adaptador, Fachada
 3. Comportamiento -> Observador y Memento
 
 Siempre que se crea un proyecto nuevo en Xcode en su codigo ya esta implemetandose los patrones de diseño
@@ -26,6 +26,7 @@ MVC, Delegado, Singleton etc
 
 1. Para empezar debemos crear dos clases, una para "conservar" y otra para "mostrar" los datos del album
     -> esta es la clase ICOAlbumModel que tiene 5 variables y un constructor o inicializador designado
+
 2. Crearemos la clase ICOAlbumView que extiende UIView
     -> aqui dentro declaramos dos variables y es necesarios escribir los inicializadores de esa clase 
     -> implementar una funcion inicializadorComun()
@@ -53,7 +54,8 @@ COMO USAR EL PATRON MVC
 
 PATRON DE DISEÑO FACHADA
 1. Aqui le damo razon de ser tanto a LibraryAPI como a PersistencyManager
-Actualmente tenemos "PersistencyManager" para guardar los datos del album a nivel local y HTTPClient de manera remota, las otras clases del proyecto no deben ser concientes de esta logica, ya que se esconden tras la fachada de LibraryAPI, para implementar este modelo solo LibraryAPI debe mantener instancias de "PersistencyManager y HTTPCLient, por tanto LibraryAPI expondra una API simple apara cceder a esos servicios
+Actualmente tenemos "PersistencyManager" para guardar los datos del album a nivel local y HTTPClient de manera remota, las otras clases del proyecto no deben ser concientes de esta logica, ya que se esconden tras el patron  "fachada" de LibraryAPI, para implementar este modelo solo LibraryAPI debe mantener instancias de "PersistencyManager y HTTPCLient, por tanto LibraryAPI expondra una API simple apara acceder a esos servicios
+
 2. Debemos implemetar variables y metodos dentro de LibraryAPI
 
 
@@ -64,8 +66,9 @@ PATRON DECORADOR O DISEÑO
     -> EXTENSIONES: es un potente mecanismo que permite añadir nuevas funcionalidades de clases existentes, estructuras, enumeraciones, pero ademas se puede extender codigo al cual no tenemos acceso y mejorar la funcionalidad.
 2. Como Utiliar extensiones
     -> imaginemos que tenemos un album musical de objeto dentro de nuestro modelo y deseo presentar dicha informacion denro de una vista de tabla
+->ICOAlbumModel es un modelo, por lo que no le importa la forma de representar los datos, necesito algun codigo externo para añadir dicha funcionalidad, pero sin modificar la clase directamente
 
-3. DELEGACION -> este patron actua en "nombre de" o en "coordinacion con" 
+3. DELEGACION -> este patron actua en "nombre de" o en "coordinacion con"
 
 4. Añadimos extensiones siempre despues de terminar la clase y nos saldran errores pues el compilador para poder continuar nos dira que necesita los metodos de data source para continuar, esto se escribe en el controlador que es el gestor, administrador y sincronizador de la lista de objetos
 
@@ -74,7 +77,7 @@ PATRON DECORADOR O DISEÑO
 
 /***************===================================================*********************/
                                
-                                        //FASE 1 DE PROYECTO
+                                        //FASE 2 DE PROYECTO
 
 /***************===================================================*********************/
 

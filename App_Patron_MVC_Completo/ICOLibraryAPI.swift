@@ -12,17 +12,18 @@ class ICOLibraryAPI: NSObject {
     
     
     //MARK: - VARIABLES LOCALES GLOBALES
-    
     private let persistencyManager: ICOPersistencyManager
     private let httpCLient: HTTPClient
     private let IsOnline: Bool // Determina si el servidor debe actualizarse con los cambios en la lista de Albumes, como albumes añadios o eliminados
     
+    
     //MARK: - INIT 
-    //Inicializamos la clase abstracta
+    //Inicializamos las instancias de las clases que añadimos a esta clase
     
     override init() {
+        
         persistencyManager = ICOPersistencyManager()// Alloc init
-        httpCLient = HTTPClient()
+        httpCLient = HTTPClient() // Alloc init
         IsOnline = false // es una prueba aqui no hay conexion con ningun servidor
         super.init()
         
@@ -50,7 +51,7 @@ class ICOLibraryAPI: NSObject {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    //
+    
     func descargaDeImagenes(notificacion:NSNotification){
         
         //1 esta funcion se ejecuta a traves de notificaciones y por tanto recibe como parametro de entrada la notificacion, el UIImageView y la urlCartula se recuperan de la notificaion
@@ -80,14 +81,25 @@ class ICOLibraryAPI: NSObject {
     
     
     //MARK: - SINGLETON
+    //Lo mismo que una clase de Objective C o de Swift
+    //No tiene por que tener una super clase
+    //puede tener propiedades, inicializadores, funciones dentro
+    //pueden tener atributos de clase estaticos
+    //Son gestionados por ARC (Heap(monticulo))
     //1 -> Creamos una variable de clase como un variable de tipo computarizada (Metodos en OBJC)
+    
     class var sharedInstance : ICOLibraryAPI {
         //2 -> Anidamos dentro de la variable de clase una estructura llamada Singleton
+        //Aqui no hay "HERENCIA"
+        //son estructuras de "C" -> muy similares a las clases
+        //Swift -> Ejemplos de Struct (Arrays y los Diccionarios)
+        //Porque se usan las "struct" -> influencia de "Haskell" y de "C++"
+        
         struct Singleton {
             //3 -> envuelve una constante estatica, esto quiere decir que esta constante solo existe una vez y son implicitamente perezosos, lo que se conluye que no se crea sino hasta que sea necesario, y solo se creará una unica vez, el inicializador no se llama de nuevo una vez que se ha creado una instancia
             static let instance = ICOLibraryAPI()
         }
-        //4 -> devuelve la propiedadde tipo computarizado
+        //4 -> devuelve la propiedad de tipo computarizado
         return Singleton.instance
     }
     
@@ -96,24 +108,31 @@ class ICOLibraryAPI: NSObject {
     
     //3 -> Debemos añadir 3 metodos que nos permitiran obtener, añadir y borrar albumes
     //MARK: - UTILS
+    
     func getAlbumsMusicales () -> [ICOAlbumModel]{
         
         return persistencyManager.getAlbumsMusicales()
     }
     
+    //Este metodo primero actualiza los datos de manera local, luego si hay una conexion a internet, actualiza el servidor remoto, esta es la verdadera fuerza del patron "FACHADA"
     func addAlbumsMusicales (album: ICOAlbumModel, indice: Int){
         
         persistencyManager.addAlbumsMusicales(album, indice: indice)
+        
             if IsOnline{
+                
                 httpCLient.postRequest ("/api/addAlbumsMusicales", body: album.description)
         }
         
     }
     
+    
     func deleteAlbumsMusicales (indice: Int){
         
         persistencyManager.deleteAlbumsMusicales(indice)
+        
         if IsOnline{
+            
             httpCLient.postRequest("/api/deleteAlbumsMusicales", body: "\(indice)")
             
         }

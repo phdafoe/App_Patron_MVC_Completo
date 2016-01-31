@@ -17,7 +17,6 @@ class ViewController: UIViewController {
     private var indiceAlbumActual = 0
 
     //MARK: - IBOUTLET
-    
     @IBOutlet weak var myTableViewMVC: UITableView!
     @IBOutlet weak var myToolBarMVC: UIToolbar!
     @IBOutlet weak var miPropioDesplazadorHorizontal: ICOHorizontalScroller!
@@ -39,15 +38,21 @@ class ViewController: UIViewController {
         //2.2 -> Aqui es donde configuramos la TableView que es delegado y Receptor de DataSourse
         myTableViewMVC.delegate = self
         myTableViewMVC.dataSource = self
-        myTableViewMVC.backgroundView = nil
-        view.addSubview(myTableViewMVC!)
         
-        //Metodo Auxiliar que carga el album actual en el lanzamiento de la aplicacion y previo que arranca en el indice 0 pues se nos enseña el primero de los objetos de nuestra libreria de Albumes musicales
+        //myTableViewMVC.backgroundView = nil
+        //view.addSubview(myTableViewMVC!)
+        
+        //2.3 ->Metodo Auxiliar que carga el album actual en el lanzamiento de la aplicacion y previo que arranca en el indice 0 pues se nos enseña el primero de los objetos de nuestra libreria de Albumes musicales
         showDataForAlbumesMusicales(indiceAlbumActual)
         
         
+        
+        //DELEGADO DE SCROLL HORIZONTAL
         miPropioDesplazadorHorizontal.icoDelegate = self
         recargaScrollerHorizontal()
+        
+        
+        //print("\(NSBundle.mainBundle())")
         
 
     }
@@ -91,7 +96,7 @@ class ViewController: UIViewController {
 }
 
 
-//AMRK: - EXTENSIONES
+//MARK: - EXTENSIONES
 extension ViewController: UITableViewDelegate{
     
 
@@ -103,8 +108,11 @@ extension ViewController: UITableViewDataSource{
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let albumData = currentAlbumMusicalData{
+            
             return albumData.titulos.count
+            
         }else{
+            
             return 0
         }
     }
@@ -114,9 +122,11 @@ extension ViewController: UITableViewDataSource{
         let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
         if let albumData = currentAlbumMusicalData{
+            
             cell.textLabel?.text = albumData.titulos[indexPath.row]
             cell.detailTextLabel?.text = albumData.valores[indexPath.row]
         }
+        
         return cell
     }    
 }
