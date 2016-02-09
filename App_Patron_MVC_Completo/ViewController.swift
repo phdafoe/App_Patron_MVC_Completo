@@ -39,23 +39,54 @@ class ViewController: UIViewController {
         myTableViewMVC.delegate = self
         myTableViewMVC.dataSource = self
         
+
         //myTableViewMVC.backgroundView = nil
         //view.addSubview(myTableViewMVC!)
+        
+        
+        
         
         //2.3 ->Metodo Auxiliar que carga el album actual en el lanzamiento de la aplicacion y previo que arranca en el indice 0 pues se nos enseña el primero de los objetos de nuestra libreria de Albumes musicales
         showDataForAlbumesMusicales(indiceAlbumActual)
         
         
+        //=====================****************
+        //Carga de PATRON MEMENTO
+        
+        //Pero que carga el estado guardado previamente cuando se inicia la App, (NOTIFICACION)
+        cargaDelEstadoPrevio()
+        //=====================****************
+        
         
         //DELEGADO DE SCROLL HORIZONTAL
         miPropioDesplazadorHorizontal.icoDelegate = self
+        // Metodo de recarga de las imagenes
         recargaScrollerHorizontal()
         
+        
+        
+        
+        //=====================****************
+        //PATRON NOTIFICACION CARGA DE DATOS
+        
+        //Cuando la App va a entrar en background el ViewController va a guardar automaticamente el estado actual de "salvarEstadoActual"
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "salvarEstadoActual", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        //=====================****************
         
         //print("\(NSBundle.mainBundle())")
         
 
     }
+    //=====================****************
+    //PATRON NOTIFICACION CARGA DE DATOS
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    
+    //=====================****************
+    
+    
 
     
     //MARK: - UTILS O AUXILIARES
@@ -67,33 +98,64 @@ class ViewController: UIViewController {
             
             //2. Traemos el albumMusical
             let album = allAlbumesMusicales[albumIndice]
+            
             //guardar los datos de albumes para presentarlo posteriormente en el table View
             currentAlbumMusicalData = album.icoae_tableRepresentation()
             
         }else{
+            
             currentAlbumMusicalData = nil
         }
+        
         //3. tenemos los datos que necesitamos, vamos a refrescar nuestra tabla
         myTableViewMVC!.reloadData()
     }
     
     
+    
+    
     //Recarga de Scroller
+    //este metodo carga datos a traves de ICOLibraryAPI y selecciona la vista que se muestra actualmente en funcion del valor actual si el indice actual es inferior a "0" lo que significa que no se ha seleccionado ninguna vista a continuacion se muestra el primer album de la lista de lo contrario se muestra el ultimo
     func recargaScrollerHorizontal(){
         
         allAlbumesMusicales = ICOLibraryAPI.sharedInstance.getAlbumsMusicales()
-        if indiceAlbumActual < 0{
-            indiceAlbumActual = allAlbumesMusicales.count - 1
-        }else if indiceAlbumActual >= allAlbumesMusicales.count{
-            indiceAlbumActual = allAlbumesMusicales.count - 1
+        if indiceAlbumActual < 0 || indiceAlbumActual >= allAlbumesMusicales.count{
+            indiceAlbumActual = allAlbumesMusicales.count
         }
         
         miPropioDesplazadorHorizontal.recargaDatosDelHorizontalScroller()
         showDataForAlbumesMusicales(indiceAlbumActual)
     }
     
+    
+    
+    
+    //=====================**************** PATRON MEMENTO **************=========================//
+    
+    func salvarEstadoActual(){
+        //1 -> cuando el usuario sale de la aplicacion y luego vuelve otra vez, lo que quiere es que sea el punto exacto en donde se dejo lo que estaba viendo e invocaremos a nuestro NSUSerDefault
+        NSUserDefaults.standardUserDefaults().setInteger(indiceAlbumActual, forKey: "currentAlbumMusicalData")
+        
+    }
+    
+    
+    func cargaDelEstadoPrevio(){
+        
+        indiceAlbumActual = NSUserDefaults.standardUserDefaults().integerForKey("currentAlbumMusicalData")
+        showDataForAlbumesMusicales(indiceAlbumActual)
+    }
+    
+    
+    
+    //=====================**************** PATRON MEMENTO **************=========================//
+    
+    
 
 }
+
+
+
+
 
 
 //MARK: - EXTENSIONES
@@ -104,6 +166,8 @@ extension ViewController: UITableViewDelegate{
 }
 
 extension ViewController: UITableViewDataSource{
+
+    //METODOS DE DATA SOURCE
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -117,19 +181,37 @@ extension ViewController: UITableViewDataSource{
         }
     }
     
+    
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
+        
         if let albumData = currentAlbumMusicalData{
+    
             
             cell.textLabel?.text = albumData.titulos[indexPath.row]
             cell.detailTextLabel?.text = albumData.valores[indexPath.row]
+            
         }
         
+        /*
+        let albumData = currentAlbumMusicalData
+
+        cell.textLabel?.text = albumData!.titulos[indexPath.row]
+        cell.detailTextLabel?.text = albumData!.valores[indexPath.row]
+        */
+        
+        
         return cell
-    }    
+    }
+    
 }
+
+
+
+
 
 extension ViewController: ICOHorizontalScrollerDelegate{
     
@@ -139,25 +221,34 @@ extension ViewController: ICOHorizontalScrollerDelegate{
         return allAlbumesMusicales.count
     }
     
+    
     //2 aqui se crea un nuevo "ICOalbumView" -> entonces establecemos como destaca su seleccion o no?
     func vistaPorIndiceEnHorizontalScroller(scroller: ICOHorizontalScroller, indice: Int) -> UIView {
         
         //1 -> primero cogemos el abum musical del indice
         let albumMusical = allAlbumesMusicales[indice]
+        
         let vistaAlbumMusical = ICOAbumView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), caratulaAlbum: albumMusical.urlCaratula!)
         
         if indiceAlbumActual == indice{
+            
             vistaAlbumMusical.highligthAlbum(didHighlightView: true)
+            
         }else{
+            
             vistaAlbumMusical.highligthAlbum(didHighlightView: false)
         }
+        
         return vistaAlbumMusical
     }
+    
+    
     
     func clickEnAlgunaVistaPorIndiceEnHorizontalScroller(scroller: ICOHorizontalScroller, indice: Int) {
         
         //1 -> primero cogemos el album musical seleccionado previamente y anulamos la seleccion es decir si marca el "highligthAlbum"
         let vistaAlbumMusicalPrevio = scroller.vistaDelIndiceDelObjeto(indiceAlbumActual) as! ICOAbumView
+        
         vistaAlbumMusicalPrevio.highligthAlbum(didHighlightView: false)
         
         //2 -> Guardamos el indice de la cubierta en la que acabamos de hacer click
@@ -167,13 +258,16 @@ extension ViewController: ICOHorizontalScrollerDelegate{
         let vistaAlbumMusicalSeleccionado = scroller.vistaDelIndiceDelObjeto(indiceAlbumActual) as! ICOAbumView
         vistaAlbumMusicalSeleccionado.highligthAlbum(didHighlightView: true)
         
-        //4 -> visualiza los datos para el nuevo album en la vista de tabla
+        //4 -> visualiza los datos para el nuevo album en la vista de tabla SINCRONIZACION DE DATOS VISTA/TABLA DE DATOS
         showDataForAlbumesMusicales(indice)
     }
     
+    
     func vistaInicialPorIndice(scrolle: ICOHorizontalScroller) -> Int {
+        
         return indiceAlbumActual
     }
+    
     
     /************==================================*******************/
     

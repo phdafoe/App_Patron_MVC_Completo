@@ -36,3 +36,4 @@ class ICOAlbumModel: NSObject {
    
 
 }
+

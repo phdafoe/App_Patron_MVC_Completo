@@ -11,7 +11,6 @@ import Foundation
 extension ICOAlbumModel{
     
     //observemos que precede las letras ae (Album_Extesion) -> convenios como estos evitaran colisiones con los metodos
-    
     func icoae_tableRepresentation() -> (titulos: [String], valores: [String]){
         
         return (["Artista", "Album Musical", "Genero", "Año"], [artista!, tituloAlbum!, generoMusical!, anyoDisco!])

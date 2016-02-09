@@ -29,9 +29,13 @@ class ICOAbumView: UIView {
         super.init(frame: frame)
         inicializadorComun()
         
+        
+        
         /****************=========================**********************/
         
         //PATRON NOTIFICACION
+        // es un modelo de subscripcion o publicacion que permite que permite que un objeto (editor /remitente) envie mensajes a otros obejtos (el abonado / oyente / receptor) 
+        //Las notificaciones son muy usadas por Apple por ejemplo cuando se muetra el teclado, cunado entre en Background etc..
         
         //esta linea envia una notificacion a traves de NSnotificacionCenter (singleton) la informacion de dicha notificacion contiene un ImageView (caratulaAlbumFinal) y la direccion url (caratulaAlbum) esta es toda la informacion que necesita para realizar la descraga de las imagenes (esto se lo debemos notificar a ICOLibraryAPI)
         
@@ -49,12 +53,20 @@ class ICOAbumView: UIView {
     func inicializadorComun(){
         backgroundColor = UIColor.blackColor()
         caratulaAlbumFinal = UIImageView(frame: CGRectMake(5, 5, frame.size.width - 10, frame.size.height - 10))
+        
+        caratulaAlbumFinal?.layer.cornerRadius = (caratulaAlbumFinal?.frame.size.width)! / 2
+        caratulaAlbumFinal?.contentMode = UIViewContentMode.ScaleAspectFill
+        caratulaAlbumFinal?.clipsToBounds = true
+        
         addSubview(caratulaAlbumFinal!)
+        
+        
         
         /****************=========================**********************/
         
         //PATRON NOTIFICACION KVO (Key Value Observer)
-        //permite que un objeto observe los cambios de una propiedad, en este caso vamos a observar los cambios de "imagen" caracteristica de UIImageView, esto se suma como UNO MISMO al registro como OBSERVADOR a la caracteristica "image" de caratulaAlbumFinal
+        //
+        //permite que un objeto observe los cambios de una propiedad especifica ya sea por si mismo o de otro, en este caso vamos a observar los cambios de "imagen" caracteristica de UIImageView, esto se suma como UNO MISMO al registro como OBSERVADOR a la caracteristica "image" de caratulaAlbumFinal
         caratulaAlbumFinal?.addObserver(self, forKeyPath: "image", options: [], context: nil)
         
         /****************=========================**********************/
@@ -73,6 +85,7 @@ class ICOAbumView: UIView {
     /****************=========================**********************/
      
      //PATRON NOTIFICACION KVO (Key Value Observer)
+    
     deinit{
         caratulaAlbumFinal?.removeObserver(self, forKeyPath: "image")
     }
@@ -94,12 +107,19 @@ class ICOAbumView: UIView {
     }
     
     
+    
+    /****************=========================**********************/
+     
+     //PATRON NOTIFICACION KVO (Key Value Observer)
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
         if keyPath == "image"{
+            
             activityIndicator?.stopAnimating()
         }
     }
+    
+    /****************=========================**********************/
 }
 
 

@@ -20,35 +20,35 @@ class ICOPersistencyManager: NSObject {
             aTituloAlbum: "Best of Bowie",
             aArtista: "David Bowie",
             aGeneroMusical: "Pop",
-            aUrlCaratula: "http://www.andresocampo.com/pruebas/CICE/albumMusic/thebestofbowie.jpg",
+            aUrlCaratula: "http://www.quantummx.com/www/wp-content/uploads/2016/01/David-Bowie.jpg",
             aAnyoDisco: "1992")
         
         let album2 = ICOAlbumModel(
             aTituloAlbum: "It's my life",
             aArtista: "No Doubt",
             aGeneroMusical: "Pop",
-            aUrlCaratula: "http://www.andresocampo.com/pruebas/CICE/albumMusic/returnofsaturn.jpg",
+            aUrlCaratula: "http://cdn6.rockinrio.com/usa/wp-content/uploads/sites/8/2014/10/post-blog-no-doubt.jpg",
             aAnyoDisco: "2003")
         
         let album3 = ICOAlbumModel(
             aTituloAlbum: "Nothing Like The Sun",
             aArtista: "Sting",
             aGeneroMusical: "Pop",
-            aUrlCaratula: "http://www.andresocampo.com/pruebas/CICE/albumMusic/nothinglikethesun.jpg",
+            aUrlCaratula: "http://cdn.sting.com/pr/KevinMazur-Lyrics.jpg",
             aAnyoDisco: "1999")
         
         let album4 = ICOAlbumModel(
             aTituloAlbum: "Staring at the Sun",
             aArtista: "U2",
             aGeneroMusical: "Pop",
-            aUrlCaratula: "http://www.andresocampo.com/pruebas/CICE/albumMusic/songofascent.jpg",
+            aUrlCaratula: "http://nosgustalamusica.com/wp-content/uploads/2014/09/u23.jpg",
             aAnyoDisco: "2000")
         
         let album5 = ICOAlbumModel(
             aTituloAlbum: "American Pie",
             aArtista: "Madonna",
             aGeneroMusical: "Pop",
-            aUrlCaratula: "http://www.andresocampo.com/pruebas/CICE/albumMusic/madonnamusicalbum.jpg",
+            aUrlCaratula: "http://elcirculord.com/wp-content/uploads/2015/10/Madonna2.jpg",
             aAnyoDisco: "2000")
         
         albumesDeMusica = [album1,album2, album3, album4, album5]
@@ -86,20 +86,23 @@ class ICOPersistencyManager: NSObject {
         
         let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
         let data = UIImagePNGRepresentation(image)
+        // si es cierto los datos se escriben en un archivo de copia de seguridad, de ser falso los datos se escriben directamente al camino
         data!.writeToFile(path, atomically: true)
         
     }
     
     //devolvera nil si alguna imagen no se encuentra
-    //Habindo realizado esta persistencia basica  vamos a descargar las imagenes el ICOLibraryAPI
+    //Habiendo realizado esta persistencia basica en la carpeta Documents vamos a descargar las imagenes el ICOLibraryAPI
     func getImagenesSalvadasLocalmente(fileName: String) -> UIImage? {
         
         var errorInicial : NSError?
         let path = NSHomeDirectory().stringByAppendingString("/Documents/\(fileName)")
         let data : NSData?
         
+        //let data1 : NSData = NSData(contentsOfFile: path, options: NSDataReadingOptions.DataReadingUncached, error: errorInicial)
+        
         do{
-            data = try NSData(contentsOfFile: path, options: .UncachedRead)
+            data = try NSData(contentsOfFile: path, options: NSDataReadingOptions.UncachedRead)
             
         }catch let errorTemporal as NSError{
             
@@ -107,7 +110,7 @@ class ICOPersistencyManager: NSObject {
             data = nil
         }
         
-        if let desempaquetadoError = errorInicial{
+        if let _ = errorInicial{
             
             return nil
             
@@ -115,7 +118,6 @@ class ICOPersistencyManager: NSObject {
             
             return UIImage(data: data!)
         }
-        
     }
     
     

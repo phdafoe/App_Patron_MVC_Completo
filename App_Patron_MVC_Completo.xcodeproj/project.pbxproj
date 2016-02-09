@@ -27,7 +27,7 @@
 		631BB11B1C2C558800333884 /* ICOPersistencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOPersistencyManager.swift; sourceTree = "<group>"; };
 		631BB11F1C2F0C9600333884 /* ICOAlbumExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOAlbumExtension.swift; sourceTree = "<group>"; };
 		631BB1211C300BD000333884 /* ICOHorizontalScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ICOHorizontalScroller.swift; sourceTree = "<group>"; };
-		6360A63E1C28110B006C985E /* App_Patron_MVC_Completo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_Patron_MVC_Completo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6360A63E1C28110B006C985E /* App_Patron_MVC_Completo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = App_Patron_MVC_Completo.app; path = "/Users/David/Desktop/MIOSCICE/JEDI/SWIFT MASTER CICE/CICECLASS_MALDONADO/App7_7_Patron_MVC_Completo/build/Debug-iphoneos/App_Patron_MVC_Completo.app"; sourceTree = "<absolute>"; };
 		6360A6411C28110B006C985E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6360A6431C28110B006C985E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6360A6461C28110B006C985E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -73,16 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				6360A6401C28110B006C985E /* App_Patron_MVC_Completo */,
-				6360A63F1C28110B006C985E /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		6360A63F1C28110B006C985E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6360A63E1C28110B006C985E /* App_Patron_MVC_Completo.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		6360A6401C28110B006C985E /* App_Patron_MVC_Completo */ = {
@@ -172,7 +163,7 @@
 				Base,
 			);
 			mainGroup = 6360A6351C28110B006C985E;
-			productRefGroup = 6360A63F1C28110B006C985E /* Products */;
+			productRefGroup = 6360A6351C28110B006C985E;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
