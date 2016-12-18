@@ -42,6 +42,7 @@ class ICOHorizontalScroller: UIView {
     //2 -> cremos la vista de desplazamiento que contendra las subVistas
     private var desplazador: UIScrollView!
     
+    
     //3 -> creamos una coleccion que contendra todas las portadas de las vistas
     var miArrayDeVistas = [UIView]() //alloc init
 
@@ -70,17 +71,13 @@ class ICOHorizontalScroller: UIView {
         
         //3 -> Aplicamos restricciones al ScrollView
         self.addConstraint(NSLayoutConstraint(item: desplazador, attribute: .Leading, relatedBy: .Equal, toItem: self, attribute: .Leading, multiplier: 1.0, constant: 0.0))
-        
         self.addConstraint(NSLayoutConstraint(item: desplazador, attribute: .Trailing, relatedBy: .Equal, toItem: self, attribute: .Trailing, multiplier: 1.0, constant: 0.0))
-        
         self.addConstraint(NSLayoutConstraint(item: desplazador, attribute: .Top, relatedBy: .Equal, toItem: self, attribute: .Top, multiplier: 1.0, constant: 0.0))
-        
         self.addConstraint(NSLayoutConstraint(item: desplazador, attribute: .Bottom, relatedBy: .Equal, toItem: self, attribute: .Bottom, multiplier: 1.0, constant: 0.0))
         
         //4 -> creamos un gesto de reconocimiento (GRIFO) este debe reconocer toques en al pantallaen la vista del scroller o de desplazador, e identifica si se ha aprovechado el objeto de la caratula si es asi le notificara al DELEGADO
-        let gestoDeReconocimientoTipoTap = UITapGestureRecognizer(target: self, action: Selector("desplazadorTocado:"))
+        let gestoDeReconocimientoTipoTap = UITapGestureRecognizer(target: self, action: #selector(ICOHorizontalScroller.desplazadorTocado(_:)))
         desplazador.addGestureRecognizer(gestoDeReconocimientoTipoTap)
-        
         
         
         // DELEGADO ESTO ES LO ULTIMO
@@ -95,29 +92,20 @@ class ICOHorizontalScroller: UIView {
         let ubicacion = reconocimientoGestoTap.locationInView(reconocimientoGestoTap.view)
         
         if let delegate = icoDelegate{
-            
             //1 -> invocamos el numero de Vistas en Scroller Horizontal en el delegado, este no tiene informacion lo unico que sabemos es que con seguridad entiende este mensaje(OBJ-C)
-            
             for indice in 0..<delegate.numeroVistasEnHorizontalScroller(self){
-                
                 //por cada vista en la vista del desplazador
                 let view = desplazador.subviews[indice]
-                
                 //comprobacion  de exito para saber si se ha encontrado algo en el instante que se ha pulsado en la pantalla sobre una imagen
                 if CGRectContainsPoint(view.frame, ubicacion){
-                    
                     delegate.clickEnAlgunaVistaPorIndiceEnHorizontalScroller(self, indice: indice)
-
                     //2 -> centramos la vista en la vista del ScrollView
                     //Establece el desplazamiento desde el origen de la vista de contenido que corresponde al origen del receptor.
                     //El frame, que describe ubicación y el tamaño de la vista en el sistema de coordenadas de su supervista .
                     
                     /*desplazador!.setContentOffset(CGPoint(x: view.frame.origin.x - self.frame.size.width / 2 + view.frame.size.width / 2 , y: 0), animated: true)*/
-                    
                     desplazador.setContentOffset(CGPoint(x: view.frame.origin.x - self.frame.size.width / 2 + view.frame.size.width / 2 , y: 0), animated: true)
-           
                     //break
-                    
                 }
             }
         }
@@ -126,17 +114,11 @@ class ICOHorizontalScroller: UIView {
     //Agregamos la siguiente funcion, para acceder a una cubierta del album de nuestro carrusel de imagenes puestas en el ScrollView
     //simplemente nos devuelve la vista a un indice determinado, posteriormente lo utilizaremos para destacar la portada del disco
     func vistaDelIndiceDelObjeto(indice: Int) -> UIView{
-        
-        
         if miArrayDeVistas.count > indice{
-            
             return miArrayDeVistas[indice]
-            
         }else{
-            
             return miArrayDeVistas[miArrayDeVistas.count - 1]
         }
-        
     }
     
     
@@ -149,8 +131,6 @@ class ICOHorizontalScroller: UIView {
             //2 -> puesto que estamos limpiando las portadas de discos, tambien es necesario para restablecer el array sino tenemos un monton de vistas que se acumulan
             miArrayDeVistas = []
             let vistas : NSArray = desplazador!.subviews
-            
-            
             //3 -> retiramos todas las subvistas previamente añadido la vista de desplazador
             for vista in vistas{
                 vista.removeFromSuperview()
@@ -183,7 +163,7 @@ class ICOHorizontalScroller: UIView {
                 //8 -> Horizontal Scroller (LA PROPIA CLASE) -> comprueba si su delegado implementa "vistaInicialPorIndice" esta comprobacion es necesaria debido a que hemos definido que es de tipo "optional dentro del Protocolo" si el delegado no implemeta este metodo por defecto es "0" y establece al desplazador centrar la vista inicial definida por el delegado
                 if let vistaInicial = icoDelegate?.vistaInicialPorIndice(self){
                     
-                    desplazador!.setContentOffset(CGPoint(x: CGFloat(vistaInicial) * CGFloat((VIEW_DIMENSIONS + (2 * VIEW_PADDING))), y: 0), animated: true)
+                    desplazador!.setContentOffset(CGPoint(x: CGFloat(vistaInicial) * CGFloat(VIEW_DIMENSIONS + (2 * VIEW_PADDING)), y: 0), animated: true)
 
                     //desplazador.setContentOffset(CGPoint(x: CGFloat(vistaInicial), y: 0), animated: true)
                 }

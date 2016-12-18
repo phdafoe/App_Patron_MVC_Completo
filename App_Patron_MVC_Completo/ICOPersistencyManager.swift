@@ -53,29 +53,26 @@ class ICOPersistencyManager: NSObject {
         
         albumesDeMusica = [album1,album2, album3, album4, album5]
         
+        super.init()
+        
     }
     
     //3 -> Debemos añadir 3 metodos que nos permitiran obtener, añadir y borrar albumes
     //MARK: - UTILS
     func getAlbumsMusicales () -> [ICOAlbumModel]{
-        
         return albumesDeMusica
     }
     
     func addAlbumsMusicales (album: ICOAlbumModel, indice: Int){
-        
         if (albumesDeMusica.count >= indice){
-            
             albumesDeMusica.insert(album, atIndex: indice)
             
         }else{
-            
             albumesDeMusica.append(album)
         }
     }
     
     func deleteAlbumsMusicales (indice: Int){
-        
         albumesDeMusica.removeAtIndex(indice)
     }
     

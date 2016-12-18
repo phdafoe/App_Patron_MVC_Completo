@@ -16,7 +16,7 @@ class ICOAbumView: UIView {
     private var caratulaAlbumFinal : UIImageView?
     
     //esto se coloca para hacer entender un proceso de descarga
-    private var activityIndicator : UIActivityIndicatorView?
+    //private var activityIndicator : UIActivityIndicatorView?
     
     //inicializador de la clase
     // este inicializador solo se usa cuando no temos control del StoryBoard, es decir siempre tenemos que AppDelegate determina el arranque de los controladores pero esta clase extiende de UIView y debe ser codificada por NSCoder o clase abstracta
@@ -53,33 +53,11 @@ class ICOAbumView: UIView {
     func inicializadorComun(){
         backgroundColor = UIColor.blackColor()
         caratulaAlbumFinal = UIImageView(frame: CGRectMake(5, 5, frame.size.width - 10, frame.size.height - 10))
-        
         caratulaAlbumFinal?.layer.cornerRadius = (caratulaAlbumFinal?.frame.size.width)! / 2
         caratulaAlbumFinal?.contentMode = UIViewContentMode.ScaleAspectFill
         caratulaAlbumFinal?.clipsToBounds = true
         
         addSubview(caratulaAlbumFinal!)
-        
-        
-        
-        /****************=========================**********************/
-        
-        //PATRON NOTIFICACION KVO (Key Value Observer)
-        //
-        //permite que un objeto observe los cambios de una propiedad especifica ya sea por si mismo o de otro, en este caso vamos a observar los cambios de "imagen" caracteristica de UIImageView, esto se suma como UNO MISMO al registro como OBSERVADOR a la caracteristica "image" de caratulaAlbumFinal
-        caratulaAlbumFinal?.addObserver(self, forKeyPath: "image", options: [], context: nil)
-        
-        /****************=========================**********************/
-        
-        
-        activityIndicator = UIActivityIndicatorView()
-        activityIndicator?.center = center
-        activityIndicator?.activityIndicatorViewStyle = .Gray
-        activityIndicator?.startAnimating()
-        addSubview(activityIndicator!)
-        
-        
-        
     }
     
     /****************=========================**********************/
@@ -87,14 +65,13 @@ class ICOAbumView: UIView {
      //PATRON NOTIFICACION KVO (Key Value Observer)
     
     deinit{
-        caratulaAlbumFinal?.removeObserver(self, forKeyPath: "image")
+        NSNotificationCenter.defaultCenter().removeObserver(caratulaAlbumFinal!)
     }
     
     /****************=========================**********************/
      
-     
+
     //MARK: - UTILS
-     
     //Añadimos esta funcion para que resalte la caratula del album que se haya seleccionado, es decir, esto cambiara el fondo de la caratula a blanco si esta seleccionada y negro cuando no
     func highligthAlbum (didHighlightView view: Bool){
         
@@ -106,20 +83,6 @@ class ICOAbumView: UIView {
         
     }
     
-    
-    
-    /****************=========================**********************/
-     
-     //PATRON NOTIFICACION KVO (Key Value Observer)
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        
-        if keyPath == "image"{
-            
-            activityIndicator?.stopAnimating()
-        }
-    }
-    
-    /****************=========================**********************/
 }
 
 

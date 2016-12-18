@@ -50,12 +50,11 @@ class ViewController: UIViewController {
         showDataForAlbumesMusicales(indiceAlbumActual)
         
         
-        //=====================****************
+        //=====================****************=====================//
         //Carga de PATRON MEMENTO
-        
         //Pero que carga el estado guardado previamente cuando se inicia la App, (NOTIFICACION)
         cargaDelEstadoPrevio()
-        //=====================****************
+        //=====================****************=====================//
         
         
         //DELEGADO DE SCROLL HORIZONTAL
@@ -68,7 +67,6 @@ class ViewController: UIViewController {
         
         //=====================****************
         //PATRON NOTIFICACION CARGA DE DATOS
-        
         //Cuando la App va a entrar en background el ViewController va a guardar automaticamente el estado actual de "salvarEstadoActual"
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "salvarEstadoActual", name: UIApplicationDidEnterBackgroundNotification, object: nil)
         //=====================****************
@@ -79,6 +77,7 @@ class ViewController: UIViewController {
     }
     //=====================****************
     //PATRON NOTIFICACION CARGA DE DATOS
+    //como debemos hacer eliminar el registro de notificaciones
     deinit{
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -142,6 +141,7 @@ class ViewController: UIViewController {
     func cargaDelEstadoPrevio(){
         
         indiceAlbumActual = NSUserDefaults.standardUserDefaults().integerForKey("currentAlbumMusicalData")
+        
         showDataForAlbumesMusicales(indiceAlbumActual)
     }
     
@@ -159,24 +159,15 @@ class ViewController: UIViewController {
 
 
 //MARK: - EXTENSIONES
-extension ViewController: UITableViewDelegate{
-    
-
-    
-}
-
-extension ViewController: UITableViewDataSource{
+extension ViewController: UITableViewDataSource, UITableViewDelegate{
 
     //METODOS DE DATA SOURCE
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if let albumData = currentAlbumMusicalData{
-            
             return albumData.titulos.count
-            
         }else{
-            
             return 0
         }
     }
@@ -187,30 +178,15 @@ extension ViewController: UITableViewDataSource{
         
         let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
-        
         if let albumData = currentAlbumMusicalData{
-    
-            
             cell.textLabel?.text = albumData.titulos[indexPath.row]
             cell.detailTextLabel?.text = albumData.valores[indexPath.row]
-            
         }
-        
-        /*
-        let albumData = currentAlbumMusicalData
-
-        cell.textLabel?.text = albumData!.titulos[indexPath.row]
-        cell.detailTextLabel?.text = albumData!.valores[indexPath.row]
-        */
-        
         
         return cell
     }
     
 }
-
-
-
 
 
 extension ViewController: ICOHorizontalScrollerDelegate{

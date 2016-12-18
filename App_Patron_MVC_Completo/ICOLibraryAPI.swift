@@ -17,6 +17,10 @@ class ICOLibraryAPI: NSObject {
     private let IsOnline: Bool // Determina si el servidor debe actualizarse con los cambios en la lista de Albumes, como albumes añadios o eliminados
     
     
+    //esto se coloca para hacer entender un proceso de descarga
+    //private var activityIndicator : UIActivityIndicatorView
+    
+    
     //MARK: - INIT 
     //Inicializamos las instancias de las clases que añadimos a esta clase
     
@@ -25,6 +29,8 @@ class ICOLibraryAPI: NSObject {
         persistencyManager = ICOPersistencyManager()// Alloc init
         httpCLient = HTTPClient() // Alloc init
         IsOnline = false // es una prueba aqui no hay conexion con ningun servidor
+        
+        //activityIndicator = UIActivityIndicatorView()
         super.init()
         
         
@@ -53,6 +59,7 @@ class ICOLibraryAPI: NSObject {
     //probablemente una mejor idea seria guardar las portadas de los discos localmente para que la App no tenga que descargarlas nuevamente una y otra vez y otra vez y otra vez ...
     //DEBEMOS HACER ESO EN ICOPersistencyManager
     deinit{
+        
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -71,11 +78,15 @@ class ICOLibraryAPI: NSObject {
         if let imageViewDesempaquetada = imageView{
             
             imageViewDesempaquetada.image = persistencyManager.getImagenesSalvadasLocalmente(urlCaratula.lastPathComponent)
+    
+            //self.activityIndicator.startAnimating()
             
             if imageViewDesempaquetada.image == nil{
                 
                 //3 si la imagen no se ha descargado iniciamos un hilo secundario
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                    
+                    
                     
                     let imagenesDescargadas = self.httpCLient.downloadImage(urlCaratula as String)
                     
@@ -86,6 +97,9 @@ class ICOLibraryAPI: NSObject {
                         imageViewDesempaquetada.image = imagenesDescargadas
                         
                         self.persistencyManager.salvarLocalmenteImagenes(imagenesDescargadas, fileName: urlCaratula.lastPathComponent)
+                        
+                        //self.activityIndicator.hidden = true
+                        
                     })
                     
                 })
@@ -124,17 +138,13 @@ class ICOLibraryAPI: NSObject {
     //MARK: - UTILS
     
     func getAlbumsMusicales () -> [ICOAlbumModel]{
-        
         return persistencyManager.getAlbumsMusicales()
     }
     
     //Este metodo primero actualiza los datos de manera local, luego si hay una conexion a internet, actualiza el servidor remoto, esta es la verdadera fuerza del patron "FACHADA"
     func addAlbumsMusicales (album: ICOAlbumModel, indice: Int){
-        
         persistencyManager.addAlbumsMusicales(album, indice: indice)
-        
             if IsOnline{
-                
                 httpCLient.postRequest ("/api/addAlbumsMusicales", body: album.description)
         }
         
@@ -142,11 +152,8 @@ class ICOLibraryAPI: NSObject {
     
     
     func deleteAlbumsMusicales (indice: Int){
-        
         persistencyManager.deleteAlbumsMusicales(indice)
-        
         if IsOnline{
-            
             httpCLient.postRequest("/api/deleteAlbumsMusicales", body: "\(indice)")
             
         }
